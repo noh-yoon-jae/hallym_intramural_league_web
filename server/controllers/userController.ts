@@ -4,13 +4,16 @@ import mymailer from '../custom_modules/mymailer';
 import { validateUsername, validatePassword, validateEmail, generateResetToken, generateRandomString } from '../custom_modules/utils';
 import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
-import fs from 'fs';
-import path from 'path';
 import { RowDataPacket, ResultSetHeader, Pool } from 'mysql2/promise';
 import logError from '../custom_modules/logError';
 
-const env = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'env.json'), 'utf-8'));
-const JWT_SECRET = env.JWT_SECRET;
+import dotenv from 'dotenv';
+dotenv.config();
+
+const { JWT_SECRET } = process.env;
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET is not defined in .env");
+}
 
 const userController = {
     signin: async (req: Request, res: Response) => {

@@ -1,18 +1,22 @@
 import mysql from 'mysql2/promise';
-import fs from 'fs';
-import path from 'path';
 
-const env = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "env.json"), "utf-8"));
+import dotenv from 'dotenv';
+dotenv.config();
+
+const { DB_HOST, DB_USER, DB_PASSWORD, DB_PORT } = process.env;
+if (!DB_HOST || !DB_USER || !DB_PASSWORD || !DB_PORT) {
+    throw new Error("Database configuration is not defined in .env");
+}
 
 let pool: mysql.Pool | null = null;
 
 function createDatabasePool(): mysql.Pool {
     return mysql.createPool({
-        host: env.DB_HOST,
-        user: env.DB_USER,
-        password: env.DB_PASSWORD,
-        port: env.DB_PORT,
-        // database: env.DB_NAME, // 필요시 주석 해제
+        host: DB_HOST!,
+        user: DB_USER!,
+        password: DB_PASSWORD!,
+        port: Number(DB_PORT)!,
+        // database: DB_NAME, // 필요시 주석 해제
         waitForConnections: true,
         connectionLimit: 10, // 동시 커넥션 수 조절 가능
         queueLimit: 0,

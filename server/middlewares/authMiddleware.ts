@@ -8,7 +8,13 @@ import logError from '../custom_modules/logError';
 
 import { getDatabaseConnection } from '../db/index';
 
-const { JWT_SECRET } = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "env.json"), 'utf-8'));
+import dotenv from 'dotenv';
+dotenv.config();
+
+const { JWT_SECRET } = process.env;
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET is not defined in .env");
+}
 
 export function checkToken(req: Request, res: Response, next: NextFunction): void {
     try {
@@ -22,7 +28,7 @@ export function checkToken(req: Request, res: Response, next: NextFunction): voi
             return next();
         }
 
-        jwt.verify(token, JWT_SECRET, async (err: any, decoded: any) => {
+        jwt.verify(token, JWT_SECRET!, async (err: any, decoded: any) => {
             if (err) {
                 console.error(err);
                 res.locals.auth = {

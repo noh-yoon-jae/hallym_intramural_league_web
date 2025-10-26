@@ -2,20 +2,26 @@ import nodemailer from 'nodemailer';
 import path from 'path';
 import fs from 'fs'
 
-const env = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "env.json"), "utf-8"));
+import dotenv from 'dotenv';
+dotenv.config();
+
+const { email, email_password, base_url } = process.env;
+if(!email || !email_password || !base_url) {
+    throw new Error("Email configuration is not defined in .env");
+}
 
 const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-        user: env.email,
-        pass: env.email_password,
+        user: email,
+        pass: email_password,
     },
-    from: env.email,
+    from: email,
 });
 
 function generateHtml(templatePath: string, data: any) {
     let template = fs.readFileSync(templatePath, 'utf8');
-    template = template.replace('{{url}}', env.base_url);
+    template = template.replace('{{url}}', base_url!);
     Object.keys(data).forEach((key: string) => {
         template = template.replace('{{{' + key + '}}}', data[key]);
     });
@@ -58,7 +64,7 @@ const mymailer = Object.freeze({
         }
 
         const mailOptions = {
-            from: env.email,
+            from: email,
             to: recipient,
             subject: "인증 메일입니다",
             html: generateHtml(templatePath, data),

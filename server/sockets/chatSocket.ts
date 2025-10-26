@@ -4,6 +4,14 @@ import jwt from 'jsonwebtoken'
 import fs from 'fs'
 import path from 'path'
 
+import dotenv from 'dotenv';
+dotenv.config();
+
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET is not defined in .env");
+}
+
 let ioInstance: Server | null = null
 
 export function getIO(): Server {
@@ -26,10 +34,6 @@ function emitUserCounts(io: Server) {
     io.emit('userCount', getChatUserCounts());
 }
 
-const { JWT_SECRET } = JSON.parse(
-    fs.readFileSync(path.join(__dirname, '..', 'env.json'), 'utf-8')
-)
-
 export function initChatSocket(io: Server) {
     ioInstance = io
     io.on('connection', (socket) => {
@@ -41,7 +45,7 @@ export function initChatSocket(io: Server) {
                 const cookies = parse(cookieHeader)
                 const token = cookies['jwt']
                 if (token) {
-                    const decoded: any = jwt.verify(token, JWT_SECRET)
+                    const decoded: any = jwt.verify(token, JWT_SECRET!)
                     socket.data.userId = decoded.id
                     memberSockets.add(socket.id)
                 }
