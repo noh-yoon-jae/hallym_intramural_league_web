@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email Verification</title>
+    <style>
+      body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f5f7fa;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+      .container {
+        width: 100%;
+        max-width: 600px;
+        padding: 40px;
+        background-color: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        text-align: center;
+      }
+      .logo {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 24px;
+        background-color: #4a90e2;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 32px;
+      }
+      h1 {
+        color: #1a1a1a;
+        font-size: 24px;
+        margin-bottom: 16px;
+        font-weight: 600;
+      }
+      .description {
+        color: #666666;
+        font-size: 16px;
+        line-height: 1.6;
+        margin: 0 auto 32px;
+        max-width: 400px;
+      }
+      .button-container {
+        margin: 32px 0;
+      }
+      .verify-button {
+        display: inline-block;
+        background-color: #4a90e2;
+        color: #ffffff;
+        padding: 16px 40px;
+        font-size: 16px;
+        font-weight: 600;
+        border: none;
+        border-radius: 8px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .verify-button:hover {
+        background-color: #357abd;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
+      }
+      .verify-button:active {
+        transform: translateY(0);
+      }
+      .footer-text {
+        color: #999999;
+        font-size: 14px;
+        margin-top: 24px;
+      }
+      .divider {
+        height: 1px;
+        background-color: #e6e6e6;
+        margin: 32px 0;
+      }
+      .header {
+        margin-bottom: 32px;
+        text-align: center;
+      }
+      .sender-info {
+        color: #4a90e2;
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="sender-info">TEST Service</div>
+        <div class="logo">✉️</div>
+      </div>
+      <h1>이메일 인증하기</h1>
+      <p class="description">
+        계정 보안을 위해 이메일 주소를 인증해 주세요.<br>
+        아래 버튼을 클릭하여 이메일 인증을 완료하실 수 있습니다.
+      </p>
+      <div class="button-container">
+        <a href="{{url}}/email-verify?token={{{verificationCode}}}" class="verify-button">이메일 인증하기</a>
+      </div>
+      <div class="divider"></div>
+      <p class="footer-text">
+        본 이메일은 계정 인증을 위해 자동으로 발송되었습니다.<br>
+        인증 요청을 하지 않으셨다면 이 이메일을 무시하셔도 됩니다.
+      </p>
+    </div>
+  </body>
+</html>
